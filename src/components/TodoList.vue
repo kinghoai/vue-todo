@@ -1,45 +1,68 @@
 <template>
   <div class="todo">
-      {{ newTodo }}
-    <input type="text" placeholder="What need to be done?" class="todo__input" @keyup.enter="addTodo" v-model="newTodo"  />
+    {{ newTodo }}
+    <input
+      type="text"
+      placeholder="What need to be done?"
+      class="todo__input"
+      @keyup.enter="addTodo"
+      v-model="newTodo"
+    />
     <div class="todos" v-for="todo in todos" :key="todo.id">
-        {{ todo.name }}
+      <div class="todo__item">
+        <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>
+        <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)">
+        <div class="item__remove" @click="removeTodo(index)">&times;</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'todo-list',
+  name: "todo-list",
   data() {
     return {
-      newTodo: '',
+      newTodo: "",
       todoId: 3,
       todos: [
         {
           id: 1,
-          name: 'Quet Nha',
-          completed: true
+          name: "Quet Nha",
+          completed: true,
+          editing: false
         },
         {
           id: 2,
-          name: 'Rua Chen',
-          completed: false
+          name: "Rua Chen",
+          completed: false,
+          editing: false
         }
       ]
     };
   },
   methods: {
-      addTodo() {
-        var newTodo = {
-            id: this.todoId,
-            name: this.newTodo,
-            completed: false
-        };
-        this.todos.push(newTodo);
-        this.newTodo = '';
-        this.todoId++;
-      }
+    addTodo() {
+      var newTodo = {
+        id: this.todoId,
+        name: this.newTodo,
+        completed: false
+      };
+      this.todos.push(newTodo);
+      this.newTodo = "";
+      this.todoId++;
+    },
+    removeTodo() {
+      console.log('aaa');
+      this.todos.splice(index, 1);
+    },
+    editTodo(todo) {
+      todo.editing = true;
+    },
+    doneEdit(todo) {
+      todo.editing = false;
+      todo.name = todo.name;
+    }
   }
 };
 </script>
@@ -54,6 +77,19 @@ export default {
     padding: 5px;
     width: 100%;
     font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .todos {
+    .todo__item {
+      border-bottom 1px solid #cccccc
+      padding 5px
+      display: flex;
+      justify-content: space-between;
+    }
+    .item__input-name {
+      font-size 16px
+    }
   }
 }
 </style>

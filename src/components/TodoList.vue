@@ -11,7 +11,7 @@
     <div class="todos" v-for="todo in todos" :key="todo.id">
       <div class="todo__item">
         <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>
-        <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)">
+        <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)" v-focus @keyup.esc="cancelEdit(todo)">
         <div class="item__remove" @click="removeTodo(index)">&times;</div>
       </div>
     </div>
@@ -25,6 +25,7 @@ export default {
     return {
       newTodo: "",
       todoId: 3,
+      beforeEditCache: '',
       todos: [
         {
           id: 1,
@@ -41,6 +42,14 @@ export default {
       ]
     };
   },
+  directives: {
+  focus: {
+    // định nghĩa cho directive
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+},
   methods: {
     addTodo() {
       var newTodo = {
@@ -58,10 +67,15 @@ export default {
     },
     editTodo(todo) {
       todo.editing = true;
+      this.beforeEditCache = todo.name;
     },
     doneEdit(todo) {
       todo.editing = false;
       todo.name = todo.name;
+    },
+    cancelEdit(todo) {
+      todo.name = this.beforeEditCache;
+      todo.editing = false;
     }
   }
 };

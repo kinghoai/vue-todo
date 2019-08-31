@@ -8,7 +8,7 @@
       @keyup.enter="addTodo"
       v-model="newTodo"
     />
-    <div class="todos" v-for="todo in todos" :key="todo.id">
+    <div class="todos" v-for="(todo, index) in todos" :key="todo.id">
       <div class="todo__item">
         <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>
         <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)" v-focus @keyup.esc="cancelEdit(todo)">
@@ -61,10 +61,6 @@ export default {
       this.newTodo = "";
       this.todoId++;
     },
-    removeTodo() {
-      console.log('aaa');
-      this.todos.splice(index, 1);
-    },
     editTodo(todo) {
       todo.editing = true;
       this.beforeEditCache = todo.name;
@@ -76,6 +72,9 @@ export default {
     cancelEdit(todo) {
       todo.name = this.beforeEditCache;
       todo.editing = false;
+    },
+    removeTodo(index) {
+      this.todos.splice(index, 1);
     }
   }
 };

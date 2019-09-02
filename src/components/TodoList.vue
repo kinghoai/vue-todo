@@ -1,6 +1,5 @@
 <template>
   <div class="todo">
-    <todo-item></todo-item>
     <input
       type="text"
       placeholder="What need to be done?"
@@ -9,14 +8,9 @@
       v-model="newTodo"
     />
     <div class="todos">
-      <div class="todo__item"  v-for="(todo, index) in todosFiltered" :key="todo.id">
-        <div class="item__left">
-          <input type="checkbox" class="item__checkbox" v-model="todo.completed">
-          <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>
-          <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)" v-focus @keyup.esc="cancelEdit(todo)">
-        </div>
-        <div class="item__remove" @click="removeTodo(index)">&times;</div>
-      </div>
+      <!-- Truyền todo & index sang TodoItem qua props -->
+      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index">
+      </todo-item>
     </div>
 
     <div class="extra">

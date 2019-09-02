@@ -10,7 +10,8 @@
     />
     <div class="todos" v-for="(todo, index) in todos" :key="todo.id">
       <div class="todo__item">
-        <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>
+        <input type="checkbox" class="item__checkbox" v-model="todo.completed">
+        <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>          
         <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)" v-focus @keyup.esc="cancelEdit(todo)">
         <div class="item__remove" @click="removeTodo(index)">&times;</div>
       </div>
@@ -102,6 +103,10 @@ export default {
     }
     .item__input-name {
       font-size 16px
+    }
+    .item__checkbox:checked + .item__name {
+      text-decoration line-through
+      color #888585
     }
   }
 }

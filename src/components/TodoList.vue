@@ -9,7 +9,7 @@
     />
     <div class="todos">
       <!-- Truyền todo & index sang TodoItem qua props -->
-      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index">
+      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" @removedTodo="removeTodo">
       </todo-item>
     </div>
 
@@ -82,14 +82,6 @@ export default {
       this.todos.push(newTodo);
       this.newTodo = "";
       this.todoId++;
-    },
-    editTodo(todo) {
-      if(todo.completed == true) {
-        alert("Can't edit task completed");
-      } else {
-        todo.editing = true;
-      this.beforeEditCache = todo.name;
-      }
     },
     doneEdit(todo) {
       todo.editing = false;

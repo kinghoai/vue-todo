@@ -9,7 +9,7 @@
       v-model="newTodo"
     />
     <div class="todos">
-      <div class="todo__item"  v-for="(todo, index) in todos" :key="todo.id">
+      <div class="todo__item"  v-for="(todo, index) in todosFiltered" :key="todo.id">
         <div class="item__left">
           <input type="checkbox" class="item__checkbox" v-model="todo.completed">
           <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>          
@@ -23,6 +23,17 @@
       <label for="checkall"><input type="checkbox" id="checkall" :checked="!anyRemaining" @change="checkAllTodos">Check all</label>
       <div>{{ remaining }} item left</div>
     </div>
+
+    <div class="extra">
+      <div class="extra__buttons">
+        <button v-bind:class="{active: filter == 'all'}" @click="filter = 'all'">All</button>
+        <button v-bind:class="{active: filter == 'active'}" @click="filter = 'active'">Active</button>
+        <button v-bind:class="{active: filter == 'completed'}" @click="filter = 'completed'">Completed</button>
+      </div>
+      <div class="extra__clear">
+        Clear Completed
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,6 +45,7 @@ export default {
       newTodo: "",
       todoId: 3,
       beforeEditCache: '',
+      filter: 'all',
       todos: [
         {
           id: 1,
@@ -47,16 +59,8 @@ export default {
           completed: false,
           editing: false
         }
-      ]
+      ],
     };
-  },
-  computed: {
-    remaining() {
-      return this.todos.filter(todo => todo.completed == false).length;
-    },
-    anyRemaining() {
-      return this.remaining != 0;
-    }
   },
   directives: {
   focus: {
@@ -98,7 +102,26 @@ export default {
         todo.completed = event.target.checked;
       })
     }
-  }
+  },
+  computed: {
+    remaining() {
+      return this.todos.filter(todo => todo.completed == false).length;
+    },
+    anyRemaining() {
+      return this.remaining != 0;
+    },
+    todosFiltered() {
+      if(this.filter == 'all') {
+        return this.todos;
+      } else if(this.filter == 'active') {
+        return this.todos.filter(todo => todo.completed == false)
+      } else if(this.filter == 'completed') {
+        return this.todos.filter(todo => todo.completed == true)
+      } else {
+        return this.todos;
+      }
+    },
+  },
 };
 </script>
 
@@ -141,6 +164,11 @@ export default {
     font-size 12px
     display: flex
     justify-content space-between
+    margin-bottom 15px
+    .active {
+      background green
+      color white
+    }
   }
 }
 </style>

@@ -12,7 +12,7 @@
       <div class="todo__item"  v-for="(todo, index) in todosFiltered" :key="todo.id">
         <div class="item__left">
           <input type="checkbox" class="item__checkbox" v-model="todo.completed">
-          <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>          
+          <div class="item__name" @dblclick="editTodo(todo)" v-if="!todo.editing">{{ todo.name }}</div>
           <input class="item__input-name" v-else type="text" v-model="todo.name" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)" v-focus @keyup.esc="cancelEdit(todo)">
         </div>
         <div class="item__remove" @click="removeTodo(index)">&times;</div>
@@ -72,18 +72,26 @@ export default {
 },
   methods: {
     addTodo() {
+      if (this.newTodo.trim().length == 0) {
+        return
+      }
       var newTodo = {
         id: this.todoId,
         name: this.newTodo,
-        completed: false
+        completed: false,
+        editing: false
       };
       this.todos.push(newTodo);
       this.newTodo = "";
       this.todoId++;
     },
     editTodo(todo) {
-      todo.editing = true;
+      if(todo.completed == true) {
+        alert("Can't edit task completed");
+      } else {
+        todo.editing = true;
       this.beforeEditCache = todo.name;
+      }
     },
     doneEdit(todo) {
       todo.editing = false;

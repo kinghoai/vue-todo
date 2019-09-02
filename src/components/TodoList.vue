@@ -1,6 +1,6 @@
 <template>
   <div class="todo">
-    {{ newTodo }}
+    <todo-item></todo-item>
     <input
       type="text"
       placeholder="What need to be done?"
@@ -21,7 +21,7 @@
 
     <div class="extra">
       <label for="checkall"><input type="checkbox" id="checkall" :checked="!anyRemaining" @change="checkAllTodos">Check all</label>
-      <div>{{ remaining }} item left</div>
+      <div>{{ remaining }} task to do</div>
     </div>
 
     <div class="extra">
@@ -38,8 +38,12 @@
 </template>
 
 <script>
+import TodoItem from './TodoItem'
 export default {
   name: "todo-list",
+  components: {
+    TodoItem,
+  },
   data() {
     return {
       newTodo: "",

@@ -20,9 +20,7 @@
 
     <div class="extra">
       <todo-filter></todo-filter>
-      <button class="extra__clear" @click="clearCompleted">
-        Clear Completed
-      </button>
+      <todo-clear-completed></todo-clear-completed>
     </div>
   </div>
 </template>
@@ -32,6 +30,7 @@ import TodoItem from './TodoItem';
 import TodoRemaining from './TodoRemaining';
 import TodoCheckAll from './TodoCheckAll';
 import TodoFilter from './TodoFilter';
+import TodoClearCompleted from './TodoClearCompleted';
 
 export default {
   name: "todo-list",
@@ -40,6 +39,7 @@ export default {
     TodoRemaining,
     TodoCheckAll,
     TodoFilter,
+    TodoClearCompleted
   },
   data() {
     return {
@@ -68,6 +68,7 @@ export default {
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', () => this.checkAllTodos());
     eventBus.$on('filterChanged', (filter) => this.filter = filter);
+    eventBus.$on('doClearCompleted', () => this.clearCompleted());
   },
   directives: {
   focus: {

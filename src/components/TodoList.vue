@@ -24,9 +24,9 @@
         <button v-bind:class="{active: filter == 'active'}" @click="filter = 'active'">Active</button>
         <button v-bind:class="{active: filter == 'completed'}" @click="filter = 'completed'">Completed</button>
       </div>
-      <div class="extra__clear">
+      <button class="extra__clear" @click="clearCompleted">
         Clear Completed
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -101,6 +101,12 @@ export default {
     },
     finishedEdit(data) {
       this.todos.splice(data.index, 1, data.todo);
+    },
+    clearCompleted() {
+      var result = confirm("Want to clear?");
+      if(result) {
+        this.todos = this.todos.filter(todo => todo.completed == false);
+      }
     }
   },
   computed: {

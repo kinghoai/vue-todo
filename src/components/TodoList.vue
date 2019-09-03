@@ -9,13 +9,13 @@
     />
     <div class="todos">
       <!-- Truyền todo & index sang TodoItem qua props -->
-      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
+      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining">
       </todo-item>
     </div>
 
     <div class="extra">
       <label for="checkall"><input type="checkbox" id="checkall" :checked="!anyRemaining" @change="checkAllTodos">Check all</label>
-      <div>{{ remaining }} task to do</div>
+      <todo-remaining :remaining="remaining"></todo-remaining>
     </div>
 
     <div class="extra">
@@ -32,11 +32,14 @@
 </template>
 
 <script>
-import TodoItem from './TodoItem'
+import TodoItem from './TodoItem';
+import TodoRemaining from './TodoRemaining';
+
 export default {
   name: "todo-list",
   components: {
     TodoItem,
+    TodoRemaining,
   },
   data() {
     return {
@@ -60,6 +63,10 @@ export default {
       ],
     };
   },
+  created() {
+    eventBus.$on('removedTodo', (index) => this.removeTodo(index));
+    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
+  },
   directives: {
   focus: {
     // định nghĩa cho directive
@@ -82,14 +89,6 @@ export default {
       this.todos.push(newTodo);
       this.newTodo = "";
       this.todoId++;
-    },
-    doneEdit(todo) {
-      todo.editing = false;
-      todo.name = todo.name;
-    },
-    cancelEdit(todo) {
-      todo.name = this.beforeEditCache;
-      todo.editing = false;
     },
     removeTodo(index) {
       this.todos.splice(index, 1);

@@ -19,11 +19,7 @@
     </div>
 
     <div class="extra">
-      <div class="extra__buttons">
-        <button v-bind:class="{active: filter == 'all'}" @click="filter = 'all'">All</button>
-        <button v-bind:class="{active: filter == 'active'}" @click="filter = 'active'">Active</button>
-        <button v-bind:class="{active: filter == 'completed'}" @click="filter = 'completed'">Completed</button>
-      </div>
+      <todo-filter></todo-filter>
       <button class="extra__clear" @click="clearCompleted">
         Clear Completed
       </button>
@@ -35,6 +31,7 @@
 import TodoItem from './TodoItem';
 import TodoRemaining from './TodoRemaining';
 import TodoCheckAll from './TodoCheckAll';
+import TodoFilter from './TodoFilter';
 
 export default {
   name: "todo-list",
@@ -42,6 +39,7 @@ export default {
     TodoItem,
     TodoRemaining,
     TodoCheckAll,
+    TodoFilter,
   },
   data() {
     return {
@@ -69,6 +67,7 @@ export default {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', () => this.checkAllTodos());
+    eventBus.$on('filterChanged', (filter) => this.filter = filter);
   },
   directives: {
   focus: {

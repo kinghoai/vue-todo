@@ -46,28 +46,13 @@ export default {
       newTodo: "",
       todoId: 3,
       beforeEditCache: '',
-      filter: 'all',
-      todos: [
-        {
-          id: 1,
-          name: "Quet Nha",
-          completed: true,
-          editing: false
-        },
-        {
-          id: 2,
-          name: "Rua Chen",
-          completed: false,
-          editing: false
-        }
-      ],
     };
   },
   created() {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', () => this.checkAllTodos());
-    eventBus.$on('filterChanged', (filter) => this.filter = filter);
+    eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter);
     eventBus.$on('doClearCompleted', () => this.clearCompleted());
   },
   directives: {
@@ -89,44 +74,44 @@ export default {
         completed: false,
         editing: false
       };
-      this.todos.push(newTodo);
+      this.$store.state.todos.push(newTodo);
       this.newTodo = "";
       this.todoId++;
     },
     removeTodo(index) {
-      this.todos.splice(index, 1);
+      this.$store.state.todos.splice(index, 1);
     },
     checkAllTodos() {
-      this.todos.forEach((todo)=>{
+      this.$store.state.todos.forEach((todo)=>{
         todo.completed = event.target.checked;
       })
     },
     finishedEdit(data) {
-      this.todos.splice(data.index, 1, data.todo);
+      this.$store.state.todos.splice(data.index, 1, data.todo);
     },
     clearCompleted() {
       var result = confirm("Want to clear?");
       if(result) {
-        this.todos = this.todos.filter(todo => todo.completed == false);
+        this.$store.state.todos = this.$store.state.todos.filter(todo => todo.completed == false);
       }
     }
   },
   computed: {
     remaining() {
-      return this.todos.filter(todo => todo.completed == false).length;
+      return this.$store.state.todos.filter(todo => todo.completed == false).length;
     },
     anyRemaining() {
       return this.remaining != 0;
     },
     todosFiltered() {
-      if(this.filter == 'all') {
-        return this.todos;
-      } else if(this.filter == 'active') {
-        return this.todos.filter(todo => todo.completed == false)
-      } else if(this.filter == 'completed') {
-        return this.todos.filter(todo => todo.completed == true)
+      if(this.$store.state.filter == 'all') {
+        return this.$store.state.todos;
+      } else if(this.$store.state.filter == 'active') {
+        return this.$store.state.todos.filter(todo => todo.completed == false)
+      } else if(this.$store.state.filter == 'completed') {
+        return this.$store.state.todos.filter(todo => todo.completed == true)
       } else {
-        return this.todos;
+        return this.$store.state.todos;
       }
     },
   },

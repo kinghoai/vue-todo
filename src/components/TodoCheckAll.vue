@@ -1,0 +1,24 @@
+<template>
+<div>
+    <label for="checkall">
+        <input type="checkbox" id="checkall" :checked="!anyRemaining" @change="allChecked">
+        Check all
+    </label>
+</div>
+</template>
+<script>
+export default {
+    name: 'todo-check-all',
+    props: {
+        anyRemaining: {
+            type: Boolean,
+            required: true
+        }
+    },
+    methods: {
+        allChecked() {
+            eventBus.$emit('checkAllChanged', this.anyRemaining)
+        }
+    }
+}
+</script>

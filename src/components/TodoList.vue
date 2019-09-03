@@ -14,7 +14,7 @@
     </div>
 
     <div class="extra">
-      <label for="checkall"><input type="checkbox" id="checkall" :checked="!anyRemaining" @change="checkAllTodos">Check all</label>
+      <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
       <todo-remaining :remaining="remaining"></todo-remaining>
     </div>
 
@@ -34,12 +34,14 @@
 <script>
 import TodoItem from './TodoItem';
 import TodoRemaining from './TodoRemaining';
+import TodoCheckAll from './TodoCheckAll';
 
 export default {
   name: "todo-list",
   components: {
     TodoItem,
     TodoRemaining,
+    TodoCheckAll,
   },
   data() {
     return {
@@ -66,6 +68,7 @@ export default {
   created() {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
+    eventBus.$on('checkAllChanged', () => this.checkAllTodos());
   },
   directives: {
   focus: {

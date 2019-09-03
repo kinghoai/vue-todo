@@ -9,7 +9,7 @@
     />
     <div class="todos">
       <!-- Truyền todo & index sang TodoItem qua props -->
-      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" @removedTodo="removeTodo">
+      <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
       </todo-item>
     </div>
 
@@ -96,9 +96,11 @@ export default {
     },
     checkAllTodos() {
       this.todos.forEach((todo)=>{
-        console.log(event);
         todo.completed = event.target.checked;
       })
+    },
+    finishedEdit(data) {
+      this.todos.splice(data.index, 1, data.todo);
     }
   },
   computed: {

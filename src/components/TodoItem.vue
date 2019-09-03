@@ -1,7 +1,7 @@
 <template>
   <div class="todo__item">
     <div class="item__left">
-      <input type="checkbox" class="item__checkbox" v-model="completed" />
+      <input type="checkbox" class="item__checkbox" v-model="completed" @change="doneEdit" />
       <div class="item__name" @dblclick="editTodo" v-if="!editing">{{ name }}</div>
       <input
         class="item__input-name"
@@ -29,6 +29,10 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    checkAll: {
+        type: Boolean,
+        required: true
     }
   },
   data() {
@@ -39,6 +43,16 @@ export default {
       editing: this.todo.editing,
       beforeEditCache: ""
     };
+  },
+  watch: {
+      checkAll() {
+            // if(this.checkAll) {
+            //     this.completed = true;
+            // } else {
+            //     this.completed = this.todo.completed;
+            // }
+            this.completed = this.checkAll ? true : this.todo.completed;
+      }
   },
   methods: {
     removeTodo(index) {

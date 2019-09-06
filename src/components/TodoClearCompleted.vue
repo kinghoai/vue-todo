@@ -7,8 +7,11 @@
 export default {
   name: 'todo-clear-completed',
   methods: {
-    clearCompleted() {
-      eventBus.$emit('doClearCompleted')
+    clearCompleted () {
+      var result = confirm('Want to clear?')
+      if (result) {
+        this.$store.state.todos = this.$store.state.todos.filter(todo => todo.completed === false)
+      }
     }
   }
 }

@@ -47,9 +47,6 @@ export default {
       beforeEditCache: ''
     }
   },
-  created () {
-    eventBus.$on('doClearCompleted', () => this.clearCompleted())
-  },
   directives: {
     focus: {
       // định nghĩa cho directive
@@ -72,17 +69,6 @@ export default {
       this.$store.state.todos.push(newTodo)
       this.newTodo = ''
       this.todoId++
-    },
-    checkAllTodos () {
-      this.$store.state.todos.forEach((todo) => {
-        todo.completed = event.target.checked
-      })
-    },
-    clearCompleted () {
-      var result = confirm('Want to clear?')
-      if (result) {
-        this.$store.state.todos = this.$store.state.todos.filter(todo => todo.completed === false);
-      }
     }
   },
   computed: {

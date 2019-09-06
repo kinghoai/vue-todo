@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     removeTodo (id) {
-      this.$store.commit('removeTodo', id)
+      this.$store.dispatch('removeTodo', id)
     },
     editTodo () {
       if (this.completed === true) {
@@ -71,7 +71,7 @@ export default {
         this.name = this.beforeEditCache
       }
       this.editing = false
-      this.$store.commit('doneEdit', {
+      this.$store.dispatch('doneEdit', {
         'id': this.id,
         'name': this.name,
         'completed': this.completed,

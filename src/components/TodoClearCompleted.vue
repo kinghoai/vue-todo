@@ -10,7 +10,7 @@ export default {
     clearCompleted () {
       var result = confirm('Want to clear?')
       if (result) {
-        this.$store.commit('clearCompleted')
+        this.$store.dispatch('clearCompleted')
       }
     }
   }

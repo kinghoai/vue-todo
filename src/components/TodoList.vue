@@ -64,7 +64,7 @@ export default {
         id: this.todoId,
         name: this.newTodo
       }
-      this.$store.commit('addTodo', newTodo)
+      this.$store.dispatch('addTodo', newTodo)
 
       this.newTodo = ''
       this.todoId++

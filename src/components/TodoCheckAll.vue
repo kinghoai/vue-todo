@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     allChecked () {
-      this.$store.commit('checkAll')
+      this.$store.dispatch('checkAll')
     }
   }
 }

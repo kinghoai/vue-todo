@@ -48,8 +48,6 @@ export default {
     }
   },
   created () {
-    eventBus.$on('checkAllChanged', () => this.checkAllTodos())
-    eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
     eventBus.$on('doClearCompleted', () => this.clearCompleted())
   },
   directives: {

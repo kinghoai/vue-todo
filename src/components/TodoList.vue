@@ -49,11 +49,11 @@ export default {
     }
   },
   created () {
-    eventBus.$on('removedTodo', (index) => this.removeTodo(index));
-    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
-    eventBus.$on('checkAllChanged', () => this.checkAllTodos());
-    eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter);
-    eventBus.$on('doClearCompleted', () => this.clearCompleted());
+    eventBus.$on('removedTodo', (index) => this.removeTodo(index))
+    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
+    eventBus.$on('checkAllChanged', () => this.checkAllTodos())
+    eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
+    eventBus.$on('doClearCompleted', () => this.clearCompleted())
   },
   directives: {
     focus: {

@@ -5,11 +5,11 @@
 </template>
 <script>
 export default {
-    name: 'todo-clear-completed',
-    methods: {
-        clearCompleted() {
-            eventBus.$emit('doClearCompleted')
-        }
+  name: 'todo-clear-completed',
+  methods: {
+    clearCompleted() {
+      eventBus.$emit('doClearCompleted')
     }
+  }
 }
 </script>

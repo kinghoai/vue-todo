@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "todo-item",
+  name: 'todo-item',
   props: {
     todo: {
       type: Object,
@@ -31,59 +31,59 @@ export default {
       required: true
     },
     checkAll: {
-        type: Boolean,
-        required: true
+      type: Boolean,
+      required: true
     }
   },
-  data() {
+  data () {
     return {
       id: this.todo.id,
       name: this.todo.name,
       completed: this.todo.completed,
       editing: this.todo.editing,
-      beforeEditCache: ""
+      beforeEditCache: ''
     };
   },
   watch: {
-      checkAll() {
-            // if(this.checkAll) {
-            //     this.completed = true;
-            // } else {
-            //     this.completed = this.todo.completed;
-            // }
-            this.completed = this.checkAll ? true : this.todo.completed;
-      }
+    checkAll () {
+      // if(this.checkAll) {
+      //     this.completed = true;
+      // } else {
+      //     this.completed = this.todo.completed;
+      // }
+      this.completed = this.checkAll ? true : this.todo.completed;
+    }
   },
   methods: {
     removeTodo(index) {
-      eventBus.$emit("removedTodo", index);
+      eventBus.$emit('removedTodo', index)
     },
     editTodo() {
-      if (this.completed == true) {
-        alert("Can't edit task completed");
+      if (this.completed === true) {
+        alert("Can't edit task completed")
       } else {
         this.editing = true;
-        this.beforeEditCache = this.name;
+        this.beforeEditCache = this.name
       }
     },
     doneEdit () {
-      if (this.name.trim() == "") {
-          this.name = this.beforeEditCache;
+      if (this.name.trim() === '') {
+        this.name = this.beforeEditCache
       }
       this.editing = false;
       eventBus.$emit("finishedEdit", {
-          'index': this.index,
-          'todo': {
-              'id': this.id,
-              'name': this.name,
-              'completed': this.completed,
-              'editing': this.editing
-          }
-      });
+        'index': this.index,
+        'todo': {
+          'id': this.id,
+          'name': this.name,
+          'completed': this.completed,
+          'editing': this.editing
+        }
+      })
     },
-    cancelEdit() {
-        this.name = this.beforeEditCache;
-        this.editing = false;
+    cancelEdit () {
+      this.name = this.beforeEditCache;
+      this.editing = false;
     }
   },
   directives: {
@@ -94,5 +94,5 @@ export default {
       }
     }
   }
-};
+}
 </script>

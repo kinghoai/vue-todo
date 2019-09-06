@@ -7,17 +7,17 @@
 </template>
 <script>
 export default {
-    name: 'todo-filter',
-    data() {
-        return {
-            filter: 'all',
-        }
-    },
-    methods: {
-        changeFilter(filter) {
-            this.filter = filter;
-            eventBus.$emit('filterChanged', filter);
-        }
+  name: 'todo-filter',
+  data () {
+    return {
+      filter: 'all',
     }
+  },
+  methods: {
+    changeFilter (filter) {
+      this.filter = filter
+      eventBus.$emit('filterChanged', filter)
+    }
+  }
 }
 </script>

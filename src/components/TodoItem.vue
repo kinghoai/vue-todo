@@ -71,8 +71,7 @@ export default {
         this.name = this.beforeEditCache
       }
       this.editing = false
-      const index = this.$store.state.todos.findIndex(item => item.id === this.id)
-      this.$store.state.todos.splice(index, 1, {
+      this.$store.commit('doneEdit', {
         'id': this.id,
         'name': this.name,
         'completed': this.completed,

@@ -63,6 +63,15 @@ export const store = new Vuex.Store({
     removeTodo (state, id) {
       const index = state.todos.findIndex(item => item.id === id)
       state.todos.splice(index, 1)
+    },
+    doneEdit (state, todo) {
+      const index = state.todos.findIndex(item => item.id === todo.id)
+      state.todos.splice(index, 1, {
+        'id': todo.id,
+        'name': todo.name,
+        'completed': todo.completed,
+        'editing': todo.editing
+      })
     }
   }
 })

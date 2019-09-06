@@ -59,6 +59,10 @@ export const store = new Vuex.Store({
     },
     changeFilter (state, filter) {
       state.filter = filter
+    },
+    removeTodo (state, id) {
+      const index = state.todos.findIndex(item => item.id === id)
+      state.todos.splice(index, 1)
     }
   }
 })

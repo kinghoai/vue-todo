@@ -54,7 +54,7 @@ export default {
         el.focus()
       }
     }
-},
+  },
   methods: {
     addTodo () {
       if (this.newTodo.trim().length === 0) {
@@ -62,11 +62,10 @@ export default {
       }
       var newTodo = {
         id: this.todoId,
-        name: this.newTodo,
-        completed: false,
-        editing: false
+        name: this.newTodo
       }
-      this.$store.state.todos.push(newTodo)
+      this.$store.commit('addTodo', newTodo)
+
       this.newTodo = ''
       this.todoId++
     }

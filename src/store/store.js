@@ -48,6 +48,9 @@ export const store = new Vuex.Store({
         completed: false,
         editing: false
       })
+    },
+    clearCompleted (state) {
+      state.todos = state.todos.filter(todo => todo.completed === false)
     }
   }
 })

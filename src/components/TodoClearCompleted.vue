@@ -10,7 +10,7 @@ export default {
     clearCompleted () {
       var result = confirm('Want to clear?')
       if (result) {
-        this.$store.state.todos = this.$store.state.todos.filter(todo => todo.completed === false)
+        this.$store.commit('clearCompleted')
       }
     }
   }

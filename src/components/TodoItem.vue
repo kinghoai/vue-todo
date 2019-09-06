@@ -14,7 +14,7 @@
         @keyup.esc="cancelEdit"
       />
     </div>
-    <div class="item__remove" @click="removeTodo(index)">&times;</div>
+    <div class="item__remove" @click="removeTodo(id)">&times;</div>
   </div>
 </template>
 
@@ -55,14 +55,15 @@ export default {
     }
   },
   methods: {
-    removeTodo(index) {
-      eventBus.$emit('removedTodo', index)
+    removeTodo (id) {
+      const index = this.$store.state.todos.findIndex(item => item.id === id)
+      this.$store.state.todos.splice(index, 1)
     },
-    editTodo() {
+    editTodo () {
       if (this.completed === true) {
         alert("Can't edit task completed")
       } else {
-        this.editing = true;
+        this.editing = true
         this.beforeEditCache = this.name
       }
     },
@@ -70,26 +71,24 @@ export default {
       if (this.name.trim() === '') {
         this.name = this.beforeEditCache
       }
-      this.editing = false;
-      eventBus.$emit("finishedEdit", {
-        'index': this.index,
-        'todo': {
-          'id': this.id,
-          'name': this.name,
-          'completed': this.completed,
-          'editing': this.editing
-        }
+      this.editing = false
+      const index = this.$store.state.todos.findIndex(item => item.id === this.id)
+      this.$store.state.todos.splice(index, 1, {
+        'id': this.id,
+        'name': this.name,
+        'completed': this.completed,
+        'editing': this.editing
       })
     },
     cancelEdit () {
-      this.name = this.beforeEditCache;
-      this.editing = false;
+      this.name = this.beforeEditCache
+      this.editing = false
     }
   },
   directives: {
     focus: {
       // định nghĩa cho directive
-      inserted: function(el) {
+      inserted: function (el) {
         el.focus();
       }
     }

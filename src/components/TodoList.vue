@@ -8,7 +8,6 @@
       v-model="newTodo"
     />
     <div class="todos">
-      <!-- Truyền todo & index sang TodoItem qua props -->
       <todo-item  v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining">
       </todo-item>
     </div>
@@ -49,8 +48,6 @@ export default {
     }
   },
   created () {
-    eventBus.$on('removedTodo', (index) => this.removeTodo(index))
-    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
     eventBus.$on('checkAllChanged', () => this.checkAllTodos())
     eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
     eventBus.$on('doClearCompleted', () => this.clearCompleted())
@@ -78,18 +75,10 @@ export default {
       this.newTodo = ''
       this.todoId++
     },
-    removeTodo (id) {
-      const index = this.$store.state.todos.findIndex(item => item.id === id)
-      this.$store.state.todos.splice(index, 1)
-    },
     checkAllTodos () {
       this.$store.state.todos.forEach((todo) => {
         todo.completed = event.target.checked
       })
-    },
-    finishedEdit (data) {
-      const index = this.$store.state.todo.findIndex(item => item.id === data.id)
-      this.$store.state.todos.splice(index, 1, data)
     },
     clearCompleted () {
       var result = confirm('Want to clear?')

@@ -66,20 +66,20 @@ export default {
         this.beforeEditCache = this.name;
       }
     },
-    doneEdit() {
-        if (this.name.trim() == "") {
-            this.name = this.beforeEditCache;
-        }
-        this.editing = false;
-        eventBus.$emit("finishedEdit", {
-            'index': this.index,
-            'todo': {
-                'id': this.id,
-                'name': this.name,
-                'completed': this.completed,
-                'editing': this.editing
-            }
-        });
+    doneEdit () {
+      if (this.name.trim() == "") {
+          this.name = this.beforeEditCache;
+      }
+      this.editing = false;
+      eventBus.$emit("finishedEdit", {
+          'index': this.index,
+          'todo': {
+              'id': this.id,
+              'name': this.name,
+              'completed': this.completed,
+              'editing': this.editing
+          }
+      });
     },
     cancelEdit() {
         this.name = this.beforeEditCache;

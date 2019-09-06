@@ -23,7 +23,7 @@ export const store = new Vuex.Store({
   },
   getters: {
     remaining (state) {
-      return state.todos.filter(todo => todo.completed == false).length
+      return state.todos.filter(todo => todo.completed === false).length
     },
     anyRemaining (state, getters) {
       return getters.remaining !== 0

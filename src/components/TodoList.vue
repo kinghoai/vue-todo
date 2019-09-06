@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import TodoItem from './TodoItem';
-import TodoRemaining from './TodoRemaining';
-import TodoCheckAll from './TodoCheckAll';
-import TodoFilter from './TodoFilter';
-import TodoClearCompleted from './TodoClearCompleted';
+import TodoItem from './TodoItem'
+import TodoRemaining from './TodoRemaining'
+import TodoCheckAll from './TodoCheckAll'
+import TodoFilter from './TodoFilter'
+import TodoClearCompleted from './TodoClearCompleted'
 
 export default {
-  name: "todo-list",
+  name: 'todo-list',
   components: {
     TodoItem,
     TodoRemaining,
@@ -41,14 +41,14 @@ export default {
     TodoFilter,
     TodoClearCompleted
   },
-  data() {
+  data () {
     return {
-      newTodo: "",
+      newTodo: '',
       todoId: 3,
-      beforeEditCache: '',
-    };
+      beforeEditCache: ''
+    }
   },
-  created() {
+  created () {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', () => this.checkAllTodos());
@@ -56,16 +56,16 @@ export default {
     eventBus.$on('doClearCompleted', () => this.clearCompleted());
   },
   directives: {
-  focus: {
-    // định nghĩa cho directive
-    inserted: function (el) {
-      el.focus()
+    focus: {
+      // định nghĩa cho directive
+      inserted: function (el) {
+        el.focus()
+      }
     }
-  }
 },
   methods: {
-    addTodo() {
-      if (this.newTodo.trim().length == 0) {
+    addTodo () {
+      if (this.newTodo.trim().length === 0) {
         return
       }
       var newTodo = {
@@ -73,41 +73,43 @@ export default {
         name: this.newTodo,
         completed: false,
         editing: false
-      };
-      this.$store.state.todos.push(newTodo);
-      this.newTodo = "";
-      this.todoId++;
+      }
+      this.$store.state.todos.push(newTodo)
+      this.newTodo = ''
+      this.todoId++
     },
-    removeTodo(index) {
-      this.$store.state.todos.splice(index, 1);
+    removeTodo (id) {
+      const index = this.$store.state.todos.findIndex(item => item.id === id)
+      this.$store.state.todos.splice(index, 1)
     },
-    checkAllTodos() {
-      this.$store.state.todos.forEach((todo)=>{
-        todo.completed = event.target.checked;
+    checkAllTodos () {
+      this.$store.state.todos.forEach((todo) => {
+        todo.completed = event.target.checked
       })
     },
-    finishedEdit(data) {
-      this.$store.state.todos.splice(data.index, 1, data.todo);
+    finishedEdit (data) {
+      const index = this.$store.state.todo.findIndex(item => item.id === data.id)
+      this.$store.state.todos.splice(index, 1, data)
     },
-    clearCompleted() {
-      var result = confirm("Want to clear?");
-      if(result) {
-        this.$store.state.todos = this.$store.state.todos.filter(todo => todo.completed == false);
+    clearCompleted () {
+      var result = confirm('Want to clear?')
+      if (result) {
+        this.$store.state.todos = this.$store.state.todos.filter(todo => todo.completed === false);
       }
     }
   },
   computed: {
-    remaining() {
+    remaining () {
       return this.$store.getters.remaining
     },
-    anyRemaining() {
+    anyRemaining () {
       return this.$store.getters.anyRemaining
     },
-    todosFiltered() {
+    todosFiltered () {
       return this.$store.getters.todosFiltered
     }
-  },
-};
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

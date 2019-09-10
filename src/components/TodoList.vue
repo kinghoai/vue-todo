@@ -43,9 +43,11 @@ export default {
   data () {
     return {
       newTodo: '',
-      todoId: 3,
       beforeEditCache: ''
     }
+  },
+  created () {
+    this.$store.dispatch('retrieveTodos')
   },
   directives: {
     focus: {
@@ -61,13 +63,11 @@ export default {
         return
       }
       var newTodo = {
-        id: this.todoId,
         name: this.newTodo
       }
       this.$store.dispatch('addTodo', newTodo)
 
       this.newTodo = ''
-      this.todoId++
     }
   },
   computed: {

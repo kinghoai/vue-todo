@@ -1,26 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
+axios.defaults.baseURL = 'http://localhost:8069/api'
 
 export const store = new Vuex.Store({
   state: {
     filter: 'all',
     todos: [
-      {
-        id: 1,
-        name: 'Quet Nha',
-        completed: true,
-        editing: false
-      },
-      {
-        id: 2,
-        name: 'Rua Chen',
-        completed: false,
-        editing: false
-      }
+      // {
+      //   id: 1,
+      //   name: 'Quet Nha',
+      //   completed: true,
+      //   editing: false
+      // },
+      // {
+      //   id: 2,
+      //   name: 'Rua Chen',
+      //   completed: false,
+      //   editing: false
+      // }
     ]
   },
+
   getters: {
     remaining (state) {
       return state.todos.filter(todo => todo.completed === false).length
@@ -41,6 +44,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    retrieveTodos (state, data) {
+      state.todos = data
+    },
     addTodo (state, todo) {
       state.todos.push({
         id: todo.id,
@@ -75,8 +81,26 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    retrieveTodos (context) {
+      axios.get('/todo')
+        .then(response => {
+          context.commit('retrieveTodos', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     addTodo (context, todo) {
-      setTimeout(() => { context.commit('addTodo', todo) }, 300)
+      axios.post('/todo', {
+        name: todo.name,
+        completed: false
+      })
+        .then(response => {
+          context.commit('addTodo', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     clearCompleted (context) {
       context.commit('clearCompleted')

@@ -51,7 +51,7 @@ export default {
       // } else {
       //     this.completed = this.todo.completed;
       // }
-      this.completed = this.checkAll ? true : this.todo.completed;
+      this.completed = this.checkAll ? 1 : this.todo.completed
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
       this.$store.dispatch('removeTodo', id)
     },
     editTodo () {
-      if (this.completed === true) {
+      if (this.completed === 1) {
         alert("Can't edit task completed")
       } else {
         this.editing = true

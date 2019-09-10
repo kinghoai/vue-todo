@@ -26,7 +26,7 @@ export const store = new Vuex.Store({
 
   getters: {
     remaining (state) {
-      return state.todos.filter(todo => todo.completed === false).length
+      return state.todos.filter(todo => todo.completed === 0 || todo.completed === false).length
     },
     anyRemaining (state, getters) {
       return getters.remaining !== 0
@@ -35,9 +35,9 @@ export const store = new Vuex.Store({
       if (state.filter === 'all') {
         return state.todos
       } else if (state.filter === 'active') {
-        return state.todos.filter(todo => todo.completed === false)
+        return state.todos.filter(todo => todo.completed === 0 || todo.completed === false)
       } else if (state.filter === 'completed') {
-        return state.todos.filter(todo => todo.completed === true)
+        return state.todos.filter(todo => todo.completed === 1 || todo.completed === true)
       } else {
         return state.todos
       }
@@ -51,12 +51,12 @@ export const store = new Vuex.Store({
       state.todos.push({
         id: todo.id,
         name: todo.name,
-        completed: false,
+        completed: 0,
         editing: false
       })
     },
     clearCompleted (state) {
-      state.todos = state.todos.filter(todo => todo.completed === false)
+      state.todos = state.todos.filter(todo => todo.completed === 0 || todo.completed === false)
     },
     checkAll (state) {
       state.todos.forEach((todo) => {
@@ -93,7 +93,7 @@ export const store = new Vuex.Store({
     addTodo (context, todo) {
       axios.post('/todo', {
         name: todo.name,
-        completed: false
+        completed: 0
       })
         .then(response => {
           context.commit('addTodo', response.data)
@@ -123,7 +123,7 @@ export const store = new Vuex.Store({
     doneEdit (context, todo) {
       axios.patch('/todo/' + todo.id, {
         name: todo.name,
-        completed: false
+        completed: 0
       })
         .then(response => {
           context.commit('doneEdit', todo)

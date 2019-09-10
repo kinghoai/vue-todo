@@ -112,10 +112,25 @@ export const store = new Vuex.Store({
       context.commit('changeFilter', filter)
     },
     removeTodo (context, id) {
-      context.commit('removeTodo', id)
+      axios.delete('/todo/' + id)
+        .then(response => {
+          context.commit('removeTodo', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     doneEdit (context, todo) {
-      context.commit('doneEdit', todo)
+      axios.patch('/todo/' + todo.id, {
+        name: todo.name,
+        completed: false
+      })
+        .then(response => {
+          context.commit('doneEdit', todo)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 })

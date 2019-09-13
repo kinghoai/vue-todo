@@ -115,7 +115,6 @@ export const store = new Vuex.Store({
         .catch(error => {
           console.log(error)
         })
-      
     },
     checkAll (context, checked) {
       axios.patch('/todoCheckAll', {
@@ -134,7 +133,7 @@ export const store = new Vuex.Store({
     removeTodo (context, id) {
       axios.delete('/todo/' + id)
         .then(response => {
-          context.commit('removeTodo', response.data)
+          context.commit('removeTodo', id)
         })
         .catch(error => {
           console.log(error)

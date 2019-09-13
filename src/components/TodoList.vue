@@ -1,5 +1,7 @@
 <template>
   <div class="todo">
+    <h1>Simple Todo note</h1>
+    <p style="text-align: center; font-size:12px; margin-bottom: 20px">(Double click to edit)</p>
     <input
       type="text"
       placeholder="What need to be done?"
@@ -87,6 +89,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .todo {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.todo {
   background: #fafafa;
   padding: 25px;
 
@@ -127,6 +133,12 @@ export default {
     .active {
       background green
       color white
+    }
+    .extra__buttons {
+      button {
+        padding 4px 10px
+        margin-right 10px
+      }
     }
   }
 }

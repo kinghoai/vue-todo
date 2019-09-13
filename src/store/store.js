@@ -142,7 +142,7 @@ export const store = new Vuex.Store({
     doneEdit (context, todo) {
       axios.patch('/todo/' + todo.id, {
         name: todo.name,
-        completed: 0
+        completed: todo.completed
       })
         .then(response => {
           context.commit('doneEdit', todo)

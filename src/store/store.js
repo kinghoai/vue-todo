@@ -78,9 +78,24 @@ export const store = new Vuex.Store({
         'completed': todo.completed,
         'editing': todo.editing
       })
+    },
+    retrieveToken (state, token) {
+      state.token = token
     }
   },
   actions: {
+    retrieveToken (context, credentials) {
+      axios.post('/login', {
+        username: credentials.username,
+        password: credentials.password
+      })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     retrieveTodos (context) {
       axios.get('/todo')
         .then(response => {

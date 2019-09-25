@@ -85,6 +85,9 @@ export const store = new Vuex.Store({
     },
     retrieveToken (state, token) {
       state.token = token
+    },
+    destroyToken (state) {
+      state.token = null
     }
   },
   actions: {
@@ -101,6 +104,27 @@ export const store = new Vuex.Store({
         .catch(error => {
           console.log(error)
         })
+    },
+    destroyToken (context) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      if (context.getters.loggedIn) {
+        return new Promise((resolve, reject) => {
+          axios.post('/user/logout')
+            .then(response => {
+              localStorage.removeItem('access_token')
+              context.commit('destroyToken')
+              resolve(response)
+              console.log(response)
+              // context.commit('addTodo', response.data)
+            })
+            .catch(error => {
+              localStorage.removeItem('access_token')
+              context.commit('destroyToken')
+              reject(error)
+            })
+        })
+      }
     },
     retrieveTodos (context) {
       axios.get('/todo')

@@ -4,6 +4,7 @@ import TodoList from '@/components/TodoList'
 import About from '@/components/pages/About'
 import Home from '@/components/pages/Home'
 import Login from '@/components/auth/Login'
+import Logout from '@/components/auth/Logout'
 import Register from '@/components/auth/Register'
 
 Vue.use(Router)
@@ -29,6 +30,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: Logout
     },
     {
       path: '/todo',

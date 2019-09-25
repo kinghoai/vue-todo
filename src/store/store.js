@@ -7,6 +7,7 @@ axios.defaults.baseURL = 'http://localhost:8069/api'
 
 export const store = new Vuex.Store({
   state: {
+    token: localStorage.getItem('access_token') || null,
     filter: 'all',
     todos: [
       // {
@@ -25,6 +26,9 @@ export const store = new Vuex.Store({
   },
 
   getters: {
+    loggedIn (state) {
+      return state.token !== null
+    },
     remaining (state) {
       return state.todos.filter(todo => todo.completed === 0 || todo.completed === false).length
     },
@@ -90,7 +94,9 @@ export const store = new Vuex.Store({
         password: credentials.password
       })
         .then(response => {
-          console.log(response)
+          const token = response.data.data.token
+          localStorage.setItem('access_token', token)
+          context.commit('retrieveToken', token)
         })
         .catch(error => {
           console.log(error)

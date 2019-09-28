@@ -37,7 +37,7 @@ export default new Router({
       component: Logout
     },
     {
-      path: '/todo',
+      path: '/register',
       name: 'register',
       component: Register
     }

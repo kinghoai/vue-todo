@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from '../router/index'
 
 Vue.use(Vuex)
 axios.defaults.baseURL = 'http://localhost:8069/api'
@@ -9,6 +10,7 @@ export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null,
     filter: 'all',
+    messageLogin: '',
     todos: [
       // {
       //   id: 1,
@@ -99,10 +101,12 @@ export const store = new Vuex.Store({
         .then(response => {
           const token = response.data.data.token
           localStorage.setItem('access_token', token)
-          context.commit('retrieveToken', token)
+          router.push({ name: 'home' })
+          context.commit('retrieveToken', token, '')
         })
         .catch(error => {
-          console.log(error)
+          console.log(error.response.data.message);
+          context.state.messageLogin = error.response.data.message;
         })
     },
     destroyToken (context) {
@@ -115,8 +119,6 @@ export const store = new Vuex.Store({
               localStorage.removeItem('access_token')
               context.commit('destroyToken')
               resolve(response)
-              console.log(response)
-              // context.commit('addTodo', response.data)
             })
             .catch(error => {
               localStorage.removeItem('access_token')

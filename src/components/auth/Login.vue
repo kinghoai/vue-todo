@@ -1,11 +1,25 @@
 <template>
   <div class="login-form">
     <h2 class="login-heading">Login</h2>
-    <el-form :label-position="labelPosition" label-width="100px" :model="formLogin">
-      <el-form-item label="Email">
+    <el-alert
+      v-if="$store.state.messageLogin != ''"
+      :title="$store.state.messageLogin"
+      center
+      type="error"
+      style="margin-bottom: 20px"
+    ></el-alert>
+
+    <el-form
+      :label-position="labelPosition"
+      :rules="rules"
+      ref="formLogin"
+      label-width="100px"
+      :model="formLogin"
+    >
+      <el-form-item label="Email" prop="email">
         <el-input placeholder="Enter email" v-model="formLogin.email"></el-input>
       </el-form-item>
-      <el-form-item label="Password">
+      <el-form-item label="Password" prop="password">
         <el-input placeholder="Enter password" v-model="formLogin.password"></el-input>
       </el-form-item>
       <el-form-item>
@@ -19,18 +33,33 @@ export default {
   name: "login",
   data() {
     return {
-      labelPosition: "left",
+      labelPosition: "right",
       formLogin: {
         email: "",
         password: ""
+      },
+      rules: {
+        email: [
+          { required: true, message: "Please input user", trigger: "blur" },
+          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+        ],
+        password: [
+          { required: true, message: "Please input Password", trigger: "blur" }
+        ]
       }
     };
   },
   methods: {
-    login() {
-      this.$store.dispatch("retrieveToken", {
-        username: this.formLogin.email,
-        password: this.formLogin.password
+    login(formLogin) {
+      this.$refs[formLogin].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("retrieveToken", {
+            username: this.formLogin.email,
+            password: this.formLogin.password
+          });
+        } else {
+          return;
+        }
       });
     }
   }

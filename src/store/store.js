@@ -11,6 +11,7 @@ export const store = new Vuex.Store({
     token: localStorage.getItem('access_token') || null,
     filter: 'all',
     messageLogin: '',
+    messageRegister: '',
     todos: [
       // {
       //   id: 1,
@@ -93,6 +94,19 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    register (context, data) {
+      axios.post('/register', {
+        name: data.name,
+        email: data.email,
+        password: data.password
+      })
+        .then(response => {
+          router.push({ name: 'login' })
+        })
+        .catch(error => {
+          context.state.messageRegister = error.response.data.message
+        })
+    },
     retrieveToken (context, credentials) {
       axios.post('/login', {
         username: credentials.username,
@@ -105,8 +119,7 @@ export const store = new Vuex.Store({
           context.commit('retrieveToken', token, '')
         })
         .catch(error => {
-          console.log(error.response.data.message);
-          context.state.messageLogin = error.response.data.message;
+          context.state.messageLogin = error.response.data.message
         })
     },
     destroyToken (context) {

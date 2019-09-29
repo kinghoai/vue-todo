@@ -1,6 +1,13 @@
 <template>
   <div class="register-form">
     <h2 class="register-heading">Register</h2>
+    <el-alert
+      v-if="$store.state.messageRegister != ''"
+      :title="$store.state.messageRegister"
+      center
+      type="error"
+      style="margin-bottom: 20px"
+    ></el-alert>
     <el-form
       :label-position="labelPosition"
       :rules="rules"
@@ -31,8 +38,8 @@ export default {
       labelPosition: "right",
       formRegister: {
         name: '',
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
       rules: {
         name: [
@@ -52,7 +59,11 @@ export default {
     register(formRegister) {
       this.$refs[formRegister].validate(valid => {
         if (valid) {
-          console.log('register')
+          this.$store.dispatch("register", {
+            name: this.formRegister.name,
+            email: this.formRegister.email,
+            password: this.formRegister.password
+          });
         } else {
           return;
         }

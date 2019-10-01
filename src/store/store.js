@@ -9,6 +9,8 @@ axios.defaults.baseURL = 'http://localhost:8069/api'
 export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null,
+    name: localStorage.getItem('user_name') || null,
+    id: localStorage.getItem('user_id') || null,
     filter: 'all',
     messageLogin: '',
     messageRegister: '',
@@ -86,8 +88,10 @@ export const store = new Vuex.Store({
         'editing': todo.editing
       })
     },
-    retrieveToken (state, token) {
+    retrieveToken (state, token, userName, userId) {
       state.token = token
+      state.userName = userName
+      state.userId = userId
     },
     destroyToken (state) {
       state.token = null
@@ -114,9 +118,13 @@ export const store = new Vuex.Store({
       })
         .then(response => {
           const token = response.data.data.token
+          const id = response.data.data.id
+          const name = response.data.data.name
+          localStorage.setItem('user_name', name)
           localStorage.setItem('access_token', token)
+          localStorage.setItem('user_id', id)
+          context.commit('retrieveToken', token, name, id)
           router.push({ name: 'home' })
-          context.commit('retrieveToken', token, '')
         })
         .catch(error => {
           context.state.messageLogin = error.response.data.message
@@ -130,11 +138,15 @@ export const store = new Vuex.Store({
           axios.post('/user/logout')
             .then(response => {
               localStorage.removeItem('access_token')
+              localStorage.removeItem('user_name')
+              localStorage.removeItem('user_id')
               context.commit('destroyToken')
               resolve(response)
             })
             .catch(error => {
               localStorage.removeItem('access_token')
+              localStorage.removeItem('user_name')
+              localStorage.removeItem('user_id')
               context.commit('destroyToken')
               reject(error)
             })
@@ -142,8 +154,13 @@ export const store = new Vuex.Store({
       }
     },
     retrieveTodos (context) {
-      axios.get('/todo')
+      axios.get('/todo', {
+        params: {
+          id: context.state.id
+        }
+      })
         .then(response => {
+          console.log(response)
           context.commit('retrieveTodos', response.data)
         })
         .catch(error => {

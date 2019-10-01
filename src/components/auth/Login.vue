@@ -20,7 +20,7 @@
         <el-input placeholder="Enter email" v-model="formLogin.email"></el-input>
       </el-form-item>
       <el-form-item label="Password" prop="password">
-        <el-input placeholder="Enter password" v-model="formLogin.password"></el-input>
+        <el-input placeholder="Enter password" type="password" v-model="formLogin.password"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="login('formLogin')">Login</el-button>

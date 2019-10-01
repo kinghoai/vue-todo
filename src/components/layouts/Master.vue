@@ -17,6 +17,9 @@
         <router-link :to="{ name: 'register' }">Register</router-link>
       </li>
       <li v-if="loggedIn">
+        <router-link :to="{ name: 'todo' }">{{ $store.state.name }}</router-link>
+      </li>
+      <li v-if="loggedIn">
         <router-link :to="{ name: 'logout' }">Logout</router-link>
       </li>
     </ul>
@@ -32,7 +35,6 @@ export default {
   }
 };
 </script>
-
 <style>
 * {
   box-sizing: border-box;

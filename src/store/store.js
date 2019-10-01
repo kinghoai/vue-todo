@@ -154,18 +154,22 @@ export const store = new Vuex.Store({
       }
     },
     retrieveTodos (context) {
-      axios.get('/todo', {
-        params: {
-          id: context.state.id
-        }
-      })
-        .then(response => {
-          console.log(response)
-          context.commit('retrieveTodos', response.data)
+      if (context.state.id != null) {
+        axios.get('/todo', {
+          params: {
+            id: context.state.id
+          }
         })
-        .catch(error => {
-          console.log(error)
-        })
+          .then(response => {
+            console.log(response)
+            context.commit('retrieveTodos', response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      } else {
+        router.push({ name: 'login' })
+      }
     },
     addTodo (context, todo) {
       axios.post('/todo', {

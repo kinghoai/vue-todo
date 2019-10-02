@@ -24,6 +24,15 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
+  } else if (to.matched.some(record => record.meta.requiresVisitor)) {
+    if (store.getters.loggedIn) {
+      next({
+        name: 'todo',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
   } else {
     next() // make sure to always call next()!
   }

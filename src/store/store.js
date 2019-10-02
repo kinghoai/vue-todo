@@ -108,13 +108,13 @@ export const store = new Vuex.Store({
         })
     },
     retrieveToken (context, credentials) {
-      return new Promise((resolve, reject) =>{
+      return new Promise((resolve, reject) => {
         axios.post('/login', {
           username: credentials.username,
           password: credentials.password
         })
           .then(response => {
-            const token = response.data.data.token
+            const token = response.data.token
             localStorage.setItem('access_token', token)
             context.commit('retrieveToken', token)
             resolve(response)
@@ -126,44 +126,33 @@ export const store = new Vuex.Store({
     },
     destroyToken (context) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-
-      if (context.getters.loggedIn) {
-        return new Promise((resolve, reject) => {
-          axios.post('/user/logout')
-            .then(response => {
-              localStorage.removeItem('access_token')
-              localStorage.removeItem('user_name')
-              localStorage.removeItem('user_id')
-              context.commit('destroyToken')
-              resolve(response)
-            })
-            .catch(error => {
-              localStorage.removeItem('access_token')
-              localStorage.removeItem('user_name')
-              localStorage.removeItem('user_id')
-              context.commit('destroyToken')
-              reject(error)
-            })
-        })
-      }
-    },
-    retrieveTodos (context) {
-      if (context.state.token != null) {
-        axios.get('/todo', {
-          params: {
-            id: context.state.id
-          }
-        })
+      return new Promise((resolve, reject) => {
+        axios.post('/user/logout')
           .then(response => {
-            console.log(response)
-            context.commit('retrieveTodos', response.data)
+            localStorage.removeItem('access_token')
+            context.commit('destroyToken')
+            resolve(response)
           })
           .catch(error => {
-            console.log(error)
+            localStorage.removeItem('access_token')
+            context.commit('destroyToken')
+            reject(error)
           })
-      } else {
-        router.push({ name: 'login' })
-      }
+      })
+    },
+    retrieveTodos (context) {
+      axios.get('/todo', {
+        params: {
+          id: context.state.id
+        }
+      })
+        .then(response => {
+          console.log(response)
+          context.commit('retrieveTodos', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     addTodo (context, todo) {
       if (context.state.token != null) {

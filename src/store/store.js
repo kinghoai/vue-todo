@@ -149,11 +149,8 @@ export const store = new Vuex.Store({
       })
     },
     retrieveTodos (context) {
-      axios.get('/todo', {
-        params: {
-          id: context.state.id
-        }
-      })
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/todo')
         .then(response => {
           console.log(response)
           context.commit('retrieveTodos', response.data)

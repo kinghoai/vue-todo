@@ -24,7 +24,8 @@ export default new Router({
     {
       path: '/todo',
       name: 'todo',
-      component: TodoList
+      component: TodoList,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',

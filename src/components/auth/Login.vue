@@ -1,14 +1,6 @@
 <template>
   <div class="login-form">
     <h2 class="login-heading">Login</h2>
-    <el-alert
-      v-if="$store.state.messageLogin != ''"
-      :title="$store.state.messageLogin"
-      center
-      type="error"
-      style="margin-bottom: 20px"
-    ></el-alert>
-
     <el-form
       :label-position="labelPosition"
       :rules="rules"

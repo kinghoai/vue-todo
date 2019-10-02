@@ -9,11 +9,7 @@ axios.defaults.baseURL = 'http://localhost:8069/api'
 export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null,
-    name: localStorage.getItem('user_name') || null,
-    id: localStorage.getItem('user_id') || null,
     filter: 'all',
-    messageLogin: '',
-    messageRegister: '',
     todos: [
       // {
       //   id: 1,
@@ -112,23 +108,21 @@ export const store = new Vuex.Store({
         })
     },
     retrieveToken (context, credentials) {
-      axios.post('/login', {
-        username: credentials.username,
-        password: credentials.password
+      return new Promise((resolve, reject) =>{
+        axios.post('/login', {
+          username: credentials.username,
+          password: credentials.password
+        })
+          .then(response => {
+            const token = response.data.data.token
+            localStorage.setItem('access_token', token)
+            context.commit('retrieveToken', token)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
-        .then(response => {
-          const token = response.data.data.token
-          const id = response.data.data.id
-          const name = response.data.data.name
-          localStorage.setItem('user_name', name)
-          localStorage.setItem('access_token', token)
-          localStorage.setItem('user_id', id)
-          context.commit('retrieveToken', token, name, id)
-          router.push({ name: 'home' })
-        })
-        .catch(error => {
-          context.state.messageLogin = error.response.data.message
-        })
     },
     destroyToken (context) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
@@ -154,7 +148,7 @@ export const store = new Vuex.Store({
       }
     },
     retrieveTodos (context) {
-      if (context.state.id != null) {
+      if (context.state.token != null) {
         axios.get('/todo', {
           params: {
             id: context.state.id
@@ -172,16 +166,21 @@ export const store = new Vuex.Store({
       }
     },
     addTodo (context, todo) {
-      axios.post('/todo', {
-        name: todo.name,
-        completed: 0
-      })
-        .then(response => {
-          context.commit('addTodo', response.data)
+      if (context.state.token != null) {
+        axios.post('/todo', {
+          name: todo.name,
+          completed: 0,
+          user_id: context.state.id
         })
-        .catch(error => {
-          console.log(error)
-        })
+          .then(response => {
+            context.commit('addTodo', response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      } else {
+        router.push({ name: 'login' })
+      }
     },
     clearCompleted (context) {
       const completedId = store.state.todos.filter(todo => todo.completed).map(todo => todo.id)

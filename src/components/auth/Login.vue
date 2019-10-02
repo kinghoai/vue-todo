@@ -49,7 +49,6 @@ export default {
             username: this.formLogin.email,
             password: this.formLogin.password
           }).then(response => {
-            console.log('hoai')
             this.$router.push({ name: 'todo' })
           })
           ;
